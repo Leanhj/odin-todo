@@ -1,8 +1,10 @@
+import { parse } from "date-fns";
+
 class Todo {
     constructor(title, description, dueDate, priority) {
         this.title = title;
         this.description = description;
-        this.dueDate = dueDate;
+        this.dueDate = parse(dueDate, 'dd/MM/yyyy', new Date());
         this.priority = priority;
         this.status = false;
     }
@@ -16,7 +18,7 @@ class Todo {
     }
 
     editDueDate(newDue) {
-        this.dueDate = newDue;
+        this.dueDate = parse(newDue, 'dd/MM/yyyy', new Date());
     }
 
     editPriority(newPriority) {

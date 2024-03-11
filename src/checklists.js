@@ -1,11 +1,11 @@
-import Check from "./checks";
+import { parse } from "date-fns";
 
 class Checklist {
     constructor(title, description, checks, dueDate, priority) {
         this.title = title;
         this.description = description;
         this.checks = checks;
-        this.dueDate = dueDate;
+        this.dueDate = parse(dueDate, 'dd/MM/yyyy', new Date());
         this.priority = priority;
     }
 
@@ -18,7 +18,7 @@ class Checklist {
     }
 
     editDueDate(newDue) {
-        this.dueDate = newDue;
+        this.dueDate = parse(newDue, 'dd/MM/yyyy', new Date());
     }
 
     editPriority(newPriority) {

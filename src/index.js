@@ -2,8 +2,9 @@ import Todo from "./todos";
 import Note from "./notes";
 import Checklist from "./checklists";
 import Check from "./checks";
+import Project from "./projects";
 
-function runTests() {
+function runTestsTodos() {
     const todoTest = new Todo('Todo 1', 'First todo', '11/03/2024', 'high');
     todoTest.log();
     todoTest.editTitle('New title');
@@ -41,4 +42,18 @@ function runTests() {
     checklistTest.log();
 }
 
-runTests();
+function runTestsProjects() {
+    const projectTest = new Project('Study');
+    const todo1 = new Todo('todo test', 'testing project', '17/03/2024', 'low');
+    const check1 = new Check('check 1');
+    let checkArray = [check1];
+    const checklist1 = new Checklist('checklist test', 'testing project', checkArray, '13/03/2024', 'mid');
+
+    projectTest.addItem(todo1);
+    projectTest.addItem(checklist1);
+
+    projectTest.log();
+}
+
+// runTestsTodos();
+// runTestsProjects();

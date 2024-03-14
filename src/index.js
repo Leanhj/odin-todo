@@ -3,57 +3,57 @@ import Note from "./notes";
 import Checklist from "./checklists";
 import Check from "./checks";
 import Project from "./projects";
-
-function runTestsTodos() {
-    const todoTest = new Todo('Todo 1', 'First todo', '11/03/2024', 'high');
-    todoTest.log();
-    todoTest.editTitle('New title');
-    todoTest.editDescription('Edited description');
-    todoTest.editDueDate('12/03/2024');
-    todoTest.editPriority('mid');
-    todoTest.editStatus();
-    todoTest.log();
-    
-    const noteTest = new Note('Note 1', 'First note');
-    noteTest.log();
-    noteTest.editTitle('New note title');
-    noteTest.editDescription('nevermind');
-    noteTest.log();
-    
-    const check1 = new Check('check 1');
-    const check2 = new Check('check 2');
-    check2.editState();
-    let checkArray = [check1, check2];
-    const checklistTest = new Checklist('Checklist 1', 'First checklist', checkArray, '18/03/2024', 'low');
-    checklistTest.log();
-    checklistTest.editTitle('Checklost');
-    checklistTest.editDescription('A checklist');
-    checklistTest.editDueDate('25/03/2024');
-    checklistTest.editPriority('high');
-    checklistTest.log();
-    
-    check1.editDescription('check 1.1');
-    check1.editState();
-    check2.editDescription('check 2.1');
-    check2.editState();
-    check1.log();
-    check2.log();
-    
-    checklistTest.log();
-}
-
-function runTestsProjects() {
-    const projectTest = new Project('Study');
-    const todo1 = new Todo('todo test', 'testing project', '17/03/2024', 'low');
-    const check1 = new Check('check 1');
-    let checkArray = [check1];
-    const checklist1 = new Checklist('checklist test', 'testing project', checkArray, '13/03/2024', 'mid');
-
-    projectTest.addItem(todo1);
-    projectTest.addItem(checklist1);
-
-    projectTest.log();
-}
+import { runTestsTodos, runTestsProjects } from "./tests";
 
 // runTestsTodos();
 // runTestsProjects();
+
+const projectHome = new Project('Home');
+const projectTodos = new Project('To-dos');
+const projectNotes = new Project('Notes');
+const projectChecklists = new Project('Checklists');
+const projectToday = new Project('Today');
+let projectArray = [projectHome, projectTodos, projectNotes, projectChecklists, projectToday];
+
+const todoDefault1 = new Todo('This is a To-do', 'You can click the checkbox to mark it as finished', '12/04/2024', 'mid');
+const noteDefault1 = new Note('This is a note', 'You can write anything you want, no due date and no priority');
+const checkDefault1 = new Check('This is a checklist item, click the checkbox to mark it as finished');
+let checkDefaultArray = [checkDefault1];
+const checklistDefault1 = new Checklist('This is a checklist', 'It can contain many tasks', checkDefaultArray, '12/04/2024', 'mid');
+
+projectHome.addItem(todoDefault1);
+projectHome.addItem(checklistDefault1);
+
+projectTodos.addItem(todoDefault1);
+
+projectNotes.addItem(noteDefault1);
+
+projectChecklists.addItem(checklistDefault1);
+
+const sidebar = document.querySelector(".sidebar");
+const itemsDiv = document.querySelector(".items");
+
+function ScreenController() {
+    function renderSidebar() {
+        sidebar.replaceChildren();
+        projectArray.forEach(element => {
+            const projectDiv = document.createElement('button');
+            projectDiv.textContent = element.name;
+            sidebar.appendChild(projectDiv);
+        });
+    }
+
+    function renderProjectItems(project) {
+        itemsDiv.replaceChildren();
+        project.items.forEach(element => {
+            const objectDiv = document.createElement('div');
+            objectDiv.textContent = element.title;
+            itemsDiv.appendChild(objectDiv);
+        });
+    }
+    
+    renderSidebar();
+    renderProjectItems(projectHome);
+}
+
+ScreenController();

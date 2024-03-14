@@ -1,0 +1,19 @@
+body {
+    margin: 0;
+}
+
+header {
+    background-color: aqua;
+    height: 10vh;
+}
+
+.content {
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    height: 90vh;
+}
+
+.sidebar {
+    background-color: blueviolet;
+    height: 100%;
+}

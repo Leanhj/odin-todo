@@ -1,6 +1,6 @@
 import Todo from "./todos";
 import Note from "./notes";
-import {Checklist, Check} from "./checklists";
+import { Checklist, Check } from "./checklists";
 import Project from "./projects";
 import { runTestsTodos, runTestsProjects, runTestDelete } from "./tests";
 

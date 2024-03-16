@@ -3,10 +3,11 @@ import Note from "./notes";
 import Checklist from "./checklists";
 import Check from "./checks";
 import Project from "./projects";
-import { runTestsTodos, runTestsProjects } from "./tests";
+import { runTestsTodos, runTestsProjects, runTestDelete } from "./tests";
 
 // runTestsTodos();
 // runTestsProjects();
+// runTestDelete();
 
 const projectHome = new Project('Home');
 const projectTodos = new Project('To-dos');

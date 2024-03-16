@@ -1,3 +1,9 @@
+import Todo from "./todos";
+import Note from "./notes";
+import Checklist from "./checklists";
+import Check from "./checks";
+import Project from "./projects";
+
 function runTestsTodos() {
     const todoTest = new Todo('Todo 1', 'First todo', '11/03/2024', 'high');
     todoTest.log();
@@ -49,4 +55,51 @@ function runTestsProjects() {
     projectTest.log();
 }
 
-export {runTestsTodos, runTestsProjects};
+function runTestDelete() {
+    const projectHome = new Project('Home');
+    const projectTodos = new Project('Todo');
+    const projectNotes = new Project('Notes');
+    const projectChecklists = new Project('Checklists');
+    const projectTest = new Project('Test');
+
+    const todo1 = new Todo('Todo 1', 'First todo', '12/04/2024', 'high');
+    const todo2 = new Todo('Todo 2', 'Second todo', '12/04/2024', 'high');
+    const note1 = new Note('Note 1', 'First note');
+    const check1 = new Check('check 1');
+    let checkArray = [check1];
+    const checklist1 = new Checklist('Checklist 1', 'First checklist', checkArray, '12/04/2024', 'high');
+
+    projectHome.addItem(todo1);
+    projectHome.addItem(todo2);
+    projectHome.addItem(checklist1);
+
+    projectTodos.addItem(todo1);
+    projectTodos.addItem(todo2);
+
+    projectNotes.addItem(note1);
+
+    projectChecklists.addItem(checklist1);
+
+    projectTest.addItem(todo1);
+    projectTest.addItem(checklist1);
+
+    projectHome.log();
+    projectTodos.log();
+    projectNotes.log();
+    projectChecklists.log();
+    projectTest.log();
+
+    projectHome.deleteItem(todo1);
+    projectHome.log();
+
+    projectTodos.deleteItem(todo2);
+    projectTodos.log();
+
+    projectNotes.deleteItem(note1);
+    projectNotes.log();
+
+    projectChecklists.deleteItem(checklist1);
+    projectChecklists.log();
+}
+
+export {runTestsTodos, runTestsProjects, runTestDelete};

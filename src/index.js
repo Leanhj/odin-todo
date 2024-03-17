@@ -46,6 +46,9 @@ function ScreenController() {
         wrapper.projects.forEach(element => {
             const projectButton = document.createElement('button');
             projectButton.textContent = element.name;
+            projectButton.addEventListener('click', () => {
+                renderProjectItems(element);
+            });
             sidebar.appendChild(projectButton);
         });
     }
@@ -65,6 +68,7 @@ function ScreenController() {
 
     function retrieveStorage() {
         let savedWrapper = JSON.parse(localStorage.getItem('wrapper'));
+        console.log(savedWrapper);
         wrapper = new ProjectWrapper();
         savedWrapper['projects'].forEach(p => {
             const project = new Project(p.name);
@@ -74,17 +78,19 @@ function ScreenController() {
     }
 
     function rebuildItems(project, items) {
-        let rebuilt = 0;
-        items.forEach((item) => {
-            if (item.id === 'todo') {
-                rebuilt = rebuildTodo(item);
-            } else if (item.id === 'note') {
-                rebuilt = rebuildNote(item);
-            } else {
-                rebuilt = rebuildChecklist(item);
-            }
-        })
-        project.addItem(rebuilt);
+        if (items.length !== 0) {
+            let rebuilt = 0;
+            items.forEach((item) => {
+                if (item.id === 'todo') {
+                    rebuilt = rebuildTodo(item);
+                } else if (item.id === 'note') {
+                    rebuilt = rebuildNote(item);
+                } else {
+                    rebuilt = rebuildChecklist(item);
+                }
+                project.addItem(rebuilt);
+            });
+        }
     }
 
     function rebuildTodo(reTodo) {
@@ -123,7 +129,7 @@ function ScreenController() {
     }
 
     renderSidebar();
-    renderProjectItems(projectHome);
+    renderProjectItems(wrapper.projects[0]);
 }
 
 ScreenController();

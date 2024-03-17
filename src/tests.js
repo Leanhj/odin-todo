@@ -1,7 +1,7 @@
 import Todo from "./todos";
 import Note from "./notes";
-import {Checklist, Check} from "./checklists";
-import Project from "./projects";
+import { Checklist, Check } from "./checklists";
+import { Project, ProjectWrapper } from "./projects";
 
 function runTestsTodos() {
     const todoTest = new Todo('Todo 1', 'First todo', '11/03/2024', 'high');
@@ -101,4 +101,52 @@ function runTestDelete() {
     projectChecklists.log();
 }
 
-export {runTestsTodos, runTestsProjects, runTestDelete};
+function runTestStorage() {
+    const projectHome = new Project('Home');
+    const projectTodos = new Project('Todo');
+    const projectNotes = new Project('Notes');
+    const projectChecklists = new Project('Checklists');
+    const projectTest = new Project('Test');
+
+    const todo1 = new Todo('Todo 1', 'First todo', '12/04/2024', 'high');
+    const todo2 = new Todo('Todo 2', 'Second todo', '12/04/2024', 'high');
+    const note1 = new Note('Note 1', 'First note');
+    const check1 = new Check('check 1');
+    let checkArray = [check1];
+    const checklist1 = new Checklist('Checklist 1', 'First checklist', checkArray, '12/04/2024', 'high');
+
+    projectHome.addItem(todo1);
+    projectHome.addItem(todo2);
+    projectHome.addItem(checklist1);
+
+    projectTodos.addItem(todo1);
+    projectTodos.addItem(todo2);
+
+    projectNotes.addItem(note1);
+
+    projectChecklists.addItem(checklist1);
+
+    projectTest.addItem(todo1);
+    projectTest.addItem(checklist1);
+
+    let projects = new ProjectWrapper();
+    projects.addProject(projectHome);
+    projects.addProject(projectTodos);
+    projects.addProject(projectNotes);
+    projects.addProject(projectChecklists);
+    projects.addProject(projectTest);
+
+    projects.log();
+    localStorage.clear();
+
+    localStorage.setItem('projects', JSON.stringify(projects));
+    let savedProjects = JSON.parse(localStorage.getItem('projects'));
+    console.log(savedProjects);
+    projects = new ProjectWrapper();
+    savedProjects['projects'].forEach(element => {
+        projects.addProject(element);
+    });
+    projects.log();
+}
+
+export { runTestsTodos, runTestsProjects, runTestDelete, runTestStorage };

@@ -1,19 +1,26 @@
 import Todo from "./todos";
 import Note from "./notes";
 import { Checklist, Check } from "./checklists";
-import Project from "./projects";
-import { runTestsTodos, runTestsProjects, runTestDelete } from "./tests";
+import { Project, ProjectWrapper } from "./projects";
+import { runTestsTodos, runTestsProjects, runTestDelete, runTestStorage } from "./tests";
 
 // runTestsTodos();
 // runTestsProjects();
 // runTestDelete();
+// runTestStorage();
 
 const projectHome = new Project('Home');
 const projectTodos = new Project('To-dos');
 const projectNotes = new Project('Notes');
 const projectChecklists = new Project('Checklists');
 const projectToday = new Project('Today');
-let projectArray = [projectHome, projectTodos, projectNotes, projectChecklists, projectToday];
+let wrapper = new ProjectWrapper();
+
+wrapper.addProject(projectHome);
+wrapper.addProject(projectTodos);
+wrapper.addProject(projectNotes);
+wrapper.addProject(projectChecklists);
+wrapper.addProject(projectToday);
 
 const todoDefault1 = new Todo('This is a To-do', 'You can click the checkbox to mark it as finished', '12/04/2024', 'mid');
 const noteDefault1 = new Note('This is a note', 'You can write anything you want, no due date and no priority');
@@ -36,10 +43,10 @@ const itemsDiv = document.querySelector(".items");
 function ScreenController() {
     function renderSidebar() {
         sidebar.replaceChildren();
-        projectArray.forEach(element => {
-            const projectDiv = document.createElement('button');
-            projectDiv.textContent = element.name;
-            sidebar.appendChild(projectDiv);
+        wrapper.projects.forEach(element => {
+            const projectButton = document.createElement('button');
+            projectButton.textContent = element.name;
+            sidebar.appendChild(projectButton);
         });
     }
 
@@ -51,7 +58,70 @@ function ScreenController() {
             itemsDiv.appendChild(objectDiv);
         });
     }
+
+    function populateStorage() {
+        localStorage.setItem('wrapper', JSON.stringify(wrapper));
+    }
+
+    function retrieveStorage() {
+        let savedWrapper = JSON.parse(localStorage.getItem('wrapper'));
+        wrapper = new ProjectWrapper();
+        savedWrapper['projects'].forEach(p => {
+            const project = new Project(p.name);
+            rebuildItems(project, p['items']);
+            wrapper.addProject(project);
+        });
+    }
+
+    function rebuildItems(project, items) {
+        let rebuilt = 0;
+        items.forEach((item) => {
+            if (item.id === 'todo') {
+                rebuilt = rebuildTodo(item);
+            } else if (item.id === 'note') {
+                rebuilt = rebuildNote(item);
+            } else {
+                rebuilt = rebuildChecklist(item);
+            }
+        })
+        project.addItem(rebuilt);
+    }
+
+    function rebuildTodo(reTodo) {
+        let todo = new Todo(reTodo.title, reTodo.description, reTodo.dueDate, reTodo.priority);
+        return todo;
+    }
+
+    function rebuildNote(reNote) {
+        let note = new Note(reNote.title, reNote.description);
+        return note;
+    }
+
+    function rebuildChecklist(reChecklist) {
+        let checks = rebuildChecks(reChecklist.checks);
+        let checklist = new Checklist(reChecklist.title, 
+            reChecklist.description, 
+            checks, 
+            reChecklist.dueDate, 
+            reChecklist.priority);
+        return checklist;
+    }
+
+    function rebuildChecks(reChecks) {
+        let checks = [];
+        reChecks.forEach((c) => {
+            const check = new Check(c.description);
+            checks.push(check);
+        });
+        return checks;
+    }
     
+    if (!localStorage.getItem('wrapper')) {
+        populateStorage();
+    } else {
+        retrieveStorage();
+    }
+
     renderSidebar();
     renderProjectItems(projectHome);
 }

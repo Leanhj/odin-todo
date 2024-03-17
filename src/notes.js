@@ -2,6 +2,7 @@ class Note {
     constructor(title, description) {
         this.title = title;
         this.description = description;
+        this.id = 'note';
     }
 
     editTitle(newTitle) {

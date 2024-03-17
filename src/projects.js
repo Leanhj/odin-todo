@@ -27,4 +27,23 @@ class Project {
     }
 }
 
-export default Project;
+class ProjectWrapper {
+    constructor() {
+        this.projects = [];
+    }
+
+    addProject(project) {
+        this.projects.push(project);
+    }
+
+    deleteProject(project) {
+        const index = this.items.indexOf(project);
+        this.items.splice(index, 1);
+    }
+
+    log() {
+        this.projects.forEach((p) => console.log(p.name));
+    }
+}
+
+export { Project, ProjectWrapper };

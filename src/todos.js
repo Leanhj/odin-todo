@@ -7,6 +7,7 @@ class Todo {
         this.dueDate = parse(dueDate, 'dd/MM/yyyy', new Date());
         this.priority = priority;
         this.status = false;
+        this.id = 'todo';
     }
 
     editTitle(newTitle) {

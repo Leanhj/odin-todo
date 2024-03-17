@@ -7,6 +7,7 @@ class Checklist {
         this.checks = checks;
         this.dueDate = parse(dueDate, 'dd/MM/yyyy', new Date());
         this.priority = priority;
+        this.id = 'checklist';
     }
 
     editTitle(newTitle) {
@@ -54,4 +55,4 @@ class Check {
     }
 }
 
-export {Checklist, Check};
+export { Checklist, Check };

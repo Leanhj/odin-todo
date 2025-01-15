@@ -51,6 +51,10 @@ function ScreenController() {
             });
             sidebar.appendChild(projectButton);
         });
+        const newNoteButton = document.createElement('button');
+        newNoteButton.textContent = 'New Note';
+        const newProjectButton = document.createElement('button');
+        newProjectButton.textContent = 'New Project';
     }
 
     function renderProjectItems(project) {

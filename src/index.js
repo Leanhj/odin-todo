@@ -37,24 +37,22 @@ projectNotes.addItem(noteDefault1);
 
 projectChecklists.addItem(checklistDefault1);
 
-const sidebar = document.querySelector(".sidebar");
+const divProjectButtons = document.querySelector(".div-project-buttons");
 const itemsDiv = document.querySelector(".items");
 
+let currentProject = projectHome;
+
 function ScreenController() {
-    function renderSidebar() {
-        sidebar.replaceChildren();
+    function renderProjectButtons() {
+        divProjectButtons.replaceChildren();
         wrapper.projects.forEach(element => {
             const projectButton = document.createElement('button');
             projectButton.textContent = element.name;
             projectButton.addEventListener('click', () => {
                 renderProjectItems(element);
             });
-            sidebar.appendChild(projectButton);
+            divProjectButtons.appendChild(projectButton);
         });
-        const newNoteButton = document.createElement('button');
-        newNoteButton.textContent = 'New Note';
-        const newProjectButton = document.createElement('button');
-        newProjectButton.textContent = 'New Project';
     }
 
     function renderProjectItems(project) {
@@ -125,6 +123,17 @@ function ScreenController() {
         });
         return checks;
     }
+
+    const buttonNew = document.querySelector(".button-new");
+    const dialog = document.querySelector(".form-new-object");
+    buttonNew.addEventListener('click', () => {
+        dialog.showModal();
+    });
+
+    const buttonClose = document.querySelector(".button-close");
+    buttonClose.addEventListener('click', () => {
+        dialog.close();
+    });
     
     if (!localStorage.getItem('wrapper')) {
         populateStorage();
@@ -132,7 +141,7 @@ function ScreenController() {
         retrieveStorage();
     }
 
-    renderSidebar();
+    renderProjectButtons();
     renderProjectItems(wrapper.projects[0]);
 }
 

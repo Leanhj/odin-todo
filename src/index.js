@@ -134,6 +134,146 @@ function ScreenController() {
     buttonClose.addEventListener('click', () => {
         dialog.close();
     });
+
+    const formContent = document.querySelector(".form-content");
+    const buttonNewTodo = document.querySelector(".button-new-todo");
+    buttonNewTodo.addEventListener('click', () => {
+        formContent.replaceChildren();
+
+        const inputTitle = document.createElement("input");
+        inputTitle.setAttribute("type", "text");
+        inputTitle.setAttribute("id", "todo-title");
+        inputTitle.setAttribute("placeholder", "Title");
+
+        const inputDesc = document.createElement("input");
+        inputDesc.setAttribute("type", "text");
+        inputDesc.setAttribute("id", "todo-description");
+        inputDesc.setAttribute("placeholder", "Description");
+
+        const inputDate = document.createElement("input");
+        inputDate.setAttribute("type", "text");
+        inputDate.setAttribute("id", "todo-date");
+        inputDate.setAttribute("placeholder", "dd/mm/yyyy");
+
+        const buttonPriorityLow = document.createElement("button");
+        buttonPriorityLow.textContent = "Low";
+
+        const buttonPriorityMid = document.createElement("button");
+        buttonPriorityMid.textContent = "Mid";
+
+        const buttonPriorityHigh = document.createElement("button");
+        buttonPriorityHigh.textContent = "High";
+
+        const buttonSubmitTodo = document.createElement("button");
+        buttonSubmitTodo.textContent = "Add new to-do";
+
+        formContent.appendChild(inputTitle);
+        formContent.appendChild(inputDesc);
+        formContent.appendChild(inputDate);
+        formContent.appendChild(buttonPriorityLow);
+        formContent.appendChild(buttonPriorityMid);
+        formContent.appendChild(buttonPriorityHigh);
+        formContent.appendChild(buttonSubmitTodo);
+    });
+
+    const buttonNewNote = document.querySelector(".button-new-note");
+    buttonNewNote.addEventListener('click', () => {
+        formContent.replaceChildren();
+
+        const inputTitle = document.createElement("input");
+        inputTitle.setAttribute("type", "text");
+        inputTitle.setAttribute("id", "todo-title");
+        inputTitle.setAttribute("placeholder", "Title");
+
+        const inputDesc = document.createElement("input");
+        inputDesc.setAttribute("type", "text");
+        inputDesc.setAttribute("id", "todo-description");
+        inputDesc.setAttribute("placeholder", "Description");
+
+        const buttonSubmitNote = document.createElement("button");
+        buttonSubmitNote.textContent = "Add new note";
+
+        formContent.appendChild(inputTitle);
+        formContent.appendChild(inputDesc);
+        formContent.appendChild(buttonSubmitNote);
+    });
+
+    const buttonNewChecklist = document.querySelector(".button-new-checklist");
+    buttonNewChecklist.addEventListener('click', () => {
+        formContent.replaceChildren();
+
+        const inputTitle = document.createElement("input");
+        inputTitle.setAttribute("type", "text");
+        inputTitle.setAttribute("id", "checklist-title");
+        inputTitle.setAttribute("placeholder", "Title");
+
+        const inputDesc = document.createElement("input");
+        inputDesc.setAttribute("type", "text");
+        inputDesc.setAttribute("id", "checklist-description");
+        inputDesc.setAttribute("placeholder", "Description");
+
+        const inputDate = document.createElement("input");
+        inputDate.setAttribute("type", "text");
+        inputDate.setAttribute("id", "checklist-date");
+        inputDate.setAttribute("placeholder", "dd/mm/yyyy");
+
+        const buttonPriorityLow = document.createElement("button");
+        buttonPriorityLow.textContent = "Low";
+
+        const buttonPriorityMid = document.createElement("button");
+        buttonPriorityMid.textContent = "Mid";
+
+        const buttonPriorityHigh = document.createElement("button");
+        buttonPriorityHigh.textContent = "High";
+
+        const divCheckItems = document.createElement("div");
+        divCheckItems.className = "div-check-items";
+
+        const inputCheckDesc = document.createElement("input");
+        inputCheckDesc.setAttribute("type", "text");
+        inputCheckDesc.setAttribute("id", "check-description");
+        inputCheckDesc.setAttribute("placeholder", "Description");
+        divCheckItems.appendChild(inputCheckDesc);
+
+        const buttonAddCheck = document.createElement("button");
+        buttonAddCheck.textContent = "Add item";
+        buttonAddCheck.addEventListener('click', () => {
+            const inputCheckDesc = document.createElement("input");
+            inputCheckDesc.setAttribute("type", "text");
+            inputCheckDesc.setAttribute("id", "check-description");
+            inputCheckDesc.setAttribute("placeholder", "Description");
+            divCheckItems.appendChild(inputCheckDesc);
+        });
+
+        const buttonSubmitChecklist = document.createElement("button");
+        buttonSubmitChecklist.textContent = "Add new checklist";
+
+        formContent.appendChild(inputTitle);
+        formContent.appendChild(inputDesc);
+        formContent.appendChild(inputDate);
+        formContent.appendChild(buttonPriorityLow);
+        formContent.appendChild(buttonPriorityMid);
+        formContent.appendChild(buttonPriorityHigh);
+        formContent.appendChild(divCheckItems);
+        formContent.appendChild(buttonAddCheck);
+        formContent.appendChild(buttonSubmitChecklist);
+    });
+
+    const buttonNewProject = document.querySelector(".button-new-project");
+    buttonNewProject.addEventListener('click', () => {
+        formContent.replaceChildren();
+
+        const inputTitle = document.createElement("input");
+        inputTitle.setAttribute("type", "text");
+        inputTitle.setAttribute("id", "project-title");
+        inputTitle.setAttribute("placeholder", "Title");
+
+        const buttonSubmitProject = document.createElement("button");
+        buttonSubmitProject.textContent = "Add new project";
+
+        formContent.appendChild(inputTitle);
+        formContent.appendChild(buttonSubmitProject);
+    });
     
     if (!localStorage.getItem('wrapper')) {
         populateStorage();

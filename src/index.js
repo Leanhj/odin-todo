@@ -45,13 +45,18 @@ let currentProject = projectHome;
 function ScreenController() {
     function renderProjectButtons() {
         divProjectButtons.replaceChildren();
+        let i = 0;
         wrapper.projects.forEach(element => {
             const projectButton = document.createElement('button');
             projectButton.textContent = element.name;
+            projectButton.setAttribute("id", i);
             projectButton.addEventListener('click', () => {
                 renderProjectItems(element);
+                let id = projectButton.getAttribute("id");
+                currentProject = wrapper.projects[id];
             });
             divProjectButtons.appendChild(projectButton);
+            i++;
         });
     }
 
@@ -70,13 +75,14 @@ function ScreenController() {
 
     function retrieveStorage() {
         let savedWrapper = JSON.parse(localStorage.getItem('wrapper'));
+        Object.setPrototypeOf(savedWrapper, ProjectWrapper.prototype);
         console.log(savedWrapper);
-        wrapper = new ProjectWrapper();
-        savedWrapper['projects'].forEach(p => {
-            const project = new Project(p.name);
-            rebuildItems(project, p['items']);
-            wrapper.addProject(project);
-        });
+        wrapper = savedWrapper;
+        // savedWrapper['projects'].forEach(p => {
+        //     const project = new Project(p.name);
+        //     rebuildItems(project, p['items']);
+        //     wrapper.addProject(project);
+        // });
     }
 
     function rebuildItems(project, items) {
@@ -136,9 +142,11 @@ function ScreenController() {
     });
 
     const formContent = document.querySelector(".form-content");
+    const form = document.createElement("form");
     const buttonNewTodo = document.querySelector(".button-new-todo");
     buttonNewTodo.addEventListener('click', () => {
         formContent.replaceChildren();
+        form.replaceChildren();
 
         const inputTitle = document.createElement("input");
         inputTitle.setAttribute("type", "text");
@@ -167,18 +175,20 @@ function ScreenController() {
         const buttonSubmitTodo = document.createElement("button");
         buttonSubmitTodo.textContent = "Add new to-do";
 
-        formContent.appendChild(inputTitle);
-        formContent.appendChild(inputDesc);
-        formContent.appendChild(inputDate);
-        formContent.appendChild(buttonPriorityLow);
-        formContent.appendChild(buttonPriorityMid);
-        formContent.appendChild(buttonPriorityHigh);
-        formContent.appendChild(buttonSubmitTodo);
+        form.appendChild(inputTitle);
+        form.appendChild(inputDesc);
+        form.appendChild(inputDate);
+        form.appendChild(buttonPriorityLow);
+        form.appendChild(buttonPriorityMid);
+        form.appendChild(buttonPriorityHigh);
+        form.appendChild(buttonSubmitTodo);
+        formContent.appendChild(form);
     });
 
     const buttonNewNote = document.querySelector(".button-new-note");
     buttonNewNote.addEventListener('click', () => {
         formContent.replaceChildren();
+        form.replaceChildren();
 
         const inputTitle = document.createElement("input");
         inputTitle.setAttribute("type", "text");
@@ -193,14 +203,16 @@ function ScreenController() {
         const buttonSubmitNote = document.createElement("button");
         buttonSubmitNote.textContent = "Add new note";
 
-        formContent.appendChild(inputTitle);
-        formContent.appendChild(inputDesc);
-        formContent.appendChild(buttonSubmitNote);
+        form.appendChild(inputTitle);
+        form.appendChild(inputDesc);
+        form.appendChild(buttonSubmitNote);
+        formContent.appendChild(form);
     });
 
     const buttonNewChecklist = document.querySelector(".button-new-checklist");
     buttonNewChecklist.addEventListener('click', () => {
         formContent.replaceChildren();
+        form.replaceChildren();
 
         const inputTitle = document.createElement("input");
         inputTitle.setAttribute("type", "text");
@@ -248,31 +260,55 @@ function ScreenController() {
         const buttonSubmitChecklist = document.createElement("button");
         buttonSubmitChecklist.textContent = "Add new checklist";
 
-        formContent.appendChild(inputTitle);
-        formContent.appendChild(inputDesc);
-        formContent.appendChild(inputDate);
-        formContent.appendChild(buttonPriorityLow);
-        formContent.appendChild(buttonPriorityMid);
-        formContent.appendChild(buttonPriorityHigh);
-        formContent.appendChild(divCheckItems);
-        formContent.appendChild(buttonAddCheck);
-        formContent.appendChild(buttonSubmitChecklist);
+        form.appendChild(inputTitle);
+        form.appendChild(inputDesc);
+        form.appendChild(inputDate);
+        form.appendChild(buttonPriorityLow);
+        form.appendChild(buttonPriorityMid);
+        form.appendChild(buttonPriorityHigh);
+        form.appendChild(divCheckItems);
+        form.appendChild(buttonAddCheck);
+        form.appendChild(buttonSubmitChecklist);
+        formContent.appendChild(form);
     });
 
     const buttonNewProject = document.querySelector(".button-new-project");
     buttonNewProject.addEventListener('click', () => {
         formContent.replaceChildren();
+        form.replaceChildren();
 
+        const labelTitle = document.createElement("label");
+        labelTitle.textContent = "Project title";
+        labelTitle.setAttribute("for", "project-title");
         const inputTitle = document.createElement("input");
         inputTitle.setAttribute("type", "text");
         inputTitle.setAttribute("id", "project-title");
+        inputTitle.setAttribute("name", "project-title");
         inputTitle.setAttribute("placeholder", "Title");
 
         const buttonSubmitProject = document.createElement("button");
         buttonSubmitProject.textContent = "Add new project";
+        buttonSubmitProject.setAttribute("type", "submit");
 
-        formContent.appendChild(inputTitle);
-        formContent.appendChild(buttonSubmitProject);
+        form.appendChild(labelTitle);
+        form.appendChild(inputTitle);
+        form.appendChild(buttonSubmitProject);
+        formContent.appendChild(form);
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+
+            const formDataObj = Object.fromEntries(formData.entries());
+            dialog.close();
+
+            const newProject = new Project(formDataObj["project-title"]);
+
+            wrapper.addProject(newProject);
+            renderProjectButtons();
+            localStorage.clear();
+            populateStorage();
+        });
     });
     
     if (!localStorage.getItem('wrapper')) {

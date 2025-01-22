@@ -80,13 +80,12 @@ function ScreenController() {
         wrapper = savedWrapper;
         savedWrapper['projects'].forEach(p => {
             Object.setPrototypeOf(p, Project.prototype);
-            rebuildItems(p, p['items']);
+            rebuildItems(p['items']);
         });
     }
 
     function rebuildItems(items) {
         if (items.length !== 0) {
-            // let rebuilt = 0;
             items.forEach((item) => {
                 if (item.id === 'todo') {
                     Object.setPrototypeOf(item, Todo.prototype);

@@ -150,41 +150,90 @@ function ScreenController() {
         formContent.replaceChildren();
         formTodo.replaceChildren();
 
+        const labelTitle = document.createElement("label");
+        labelTitle.textContent = "To-do title";
+        labelTitle.setAttribute("for", "todo-title");
         const inputTitle = document.createElement("input");
         inputTitle.setAttribute("type", "text");
         inputTitle.setAttribute("id", "todo-title");
+        inputTitle.setAttribute("name", "todo-title");
         inputTitle.setAttribute("placeholder", "Title");
 
+        const labelDesc = document.createElement("label");
+        labelDesc.textContent = "To-do description";
+        labelDesc.setAttribute("for", "todo-description");
         const inputDesc = document.createElement("input");
         inputDesc.setAttribute("type", "text");
         inputDesc.setAttribute("id", "todo-description");
+        inputDesc.setAttribute("name", "todo-description");
         inputDesc.setAttribute("placeholder", "Description");
 
+        const labelDate = document.createElement("label");
+        labelDate.textContent = "Due date";
+        labelDate.setAttribute("for", "todo-date");
         const inputDate = document.createElement("input");
         inputDate.setAttribute("type", "text");
         inputDate.setAttribute("id", "todo-date");
+        inputDate.setAttribute("name", "todo-date");
         inputDate.setAttribute("placeholder", "dd/mm/yyyy");
 
+        let priority = "low";
         const buttonPriorityLow = document.createElement("button");
         buttonPriorityLow.textContent = "Low";
+        buttonPriorityLow.addEventListener("click", (e) => {
+            e.preventDefault();
+            priority = "low";
+        });
 
         const buttonPriorityMid = document.createElement("button");
         buttonPriorityMid.textContent = "Mid";
+        buttonPriorityMid.addEventListener("click", (e) => {
+            e.preventDefault();
+            priority = "mid";
+        });
 
         const buttonPriorityHigh = document.createElement("button");
         buttonPriorityHigh.textContent = "High";
+        buttonPriorityHigh.addEventListener("click", (e) => {
+            e.preventDefault();
+            priority = "high";
+        });
 
         const buttonSubmitTodo = document.createElement("button");
         buttonSubmitTodo.textContent = "Add new to-do";
 
+        formTodo.appendChild(labelTitle);
         formTodo.appendChild(inputTitle);
+        formTodo.appendChild(labelDesc);
         formTodo.appendChild(inputDesc);
+        formTodo.appendChild(labelDate);
         formTodo.appendChild(inputDate);
         formTodo.appendChild(buttonPriorityLow);
         formTodo.appendChild(buttonPriorityMid);
         formTodo.appendChild(buttonPriorityHigh);
         formTodo.appendChild(buttonSubmitTodo);
         formContent.appendChild(formTodo);
+
+        formTodo.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+
+            const formDataObj = Object.fromEntries(formData.entries());
+            dialog.close();
+
+            const newTodo = new Todo(
+                formDataObj["todo-title"], 
+                formDataObj["todo-description"],
+                formDataObj["todo-date"],
+                priority
+            );
+
+            currentProject.addItem(newTodo);
+            renderProjectButtons();
+            renderProjectItems(currentProject);
+            localStorage.clear();
+            populateStorage();
+        });
     });
 
     const buttonNewNote = document.querySelector(".button-new-note");

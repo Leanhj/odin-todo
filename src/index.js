@@ -84,7 +84,7 @@ function ScreenController() {
         });
     }
 
-    function rebuildItems(project, items) {
+    function rebuildItems(items) {
         if (items.length !== 0) {
             // let rebuilt = 0;
             items.forEach((item) => {
@@ -94,39 +94,12 @@ function ScreenController() {
                     Object.setPrototypeOf(item, Note.prototype);
                 } else {
                     Object.setPrototypeOf(item, Checklist.prototype);
+                    item.checks.forEach((check) => {
+                        Object.setPrototypeOf(check, Check.prototype);
+                    });
                 }
-                // project.addItem(rebuilt);
             });
         }
-    }
-
-    function rebuildTodo(reTodo) {
-        let todo = new Todo(reTodo.title, reTodo.description, reTodo.dueDate, reTodo.priority);
-        return todo;
-    }
-
-    function rebuildNote(reNote) {
-        let note = new Note(reNote.title, reNote.description);
-        return note;
-    }
-
-    function rebuildChecklist(reChecklist) {
-        let checks = rebuildChecks(reChecklist.checks);
-        let checklist = new Checklist(reChecklist.title, 
-            reChecklist.description, 
-            checks, 
-            reChecklist.dueDate, 
-            reChecklist.priority);
-        return checklist;
-    }
-
-    function rebuildChecks(reChecks) {
-        let checks = [];
-        reChecks.forEach((c) => {
-            const check = new Check(c.description);
-            checks.push(check);
-        });
-        return checks;
     }
 
     const buttonNew = document.querySelector(".button-new");

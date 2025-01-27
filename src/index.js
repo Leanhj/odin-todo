@@ -54,6 +54,11 @@ function ScreenController() {
                 renderProjectItems(element);
                 let id = projectButton.getAttribute("id");
                 currentProject = wrapper.projects[id];
+                if (id <= 4 && id > 0) {
+                    buttonNew.disabled = true;
+                } else {
+                    buttonNew.disabled = false;
+                }
             });
             divProjectButtons.appendChild(projectButton);
             i++;
@@ -173,6 +178,7 @@ function ScreenController() {
 
         const buttonSubmitTodo = document.createElement("button");
         buttonSubmitTodo.textContent = "Add new to-do";
+        buttonSubmitTodo.setAttribute("type", "submit");
 
         formTodo.appendChild(labelTitle);
         formTodo.appendChild(inputTitle);
@@ -233,6 +239,7 @@ function ScreenController() {
 
         const buttonSubmitNote = document.createElement("button");
         buttonSubmitNote.textContent = "Add new note";
+        buttonSubmitNote.setAttribute("type", "submit");
 
         formNote.appendChild(labelTitle);
         formNote.appendChild(inputTitle);
@@ -266,32 +273,57 @@ function ScreenController() {
         formContent.replaceChildren();
         formChecklist.replaceChildren();
 
+        const labelTitle = document.createElement("label");
+        labelTitle.textContent = "Checklist title";
+        labelTitle.setAttribute("for", "checklist-title");
         const inputTitle = document.createElement("input");
         inputTitle.setAttribute("type", "text");
         inputTitle.setAttribute("id", "checklist-title");
+        inputTitle.setAttribute("name", "checklist-title");
         inputTitle.setAttribute("placeholder", "Title");
 
+        const labelDesc = document.createElement("label");
+        labelDesc.textContent = "Checklist description";
+        labelDesc.setAttribute("for", "checklist-description");
         const inputDesc = document.createElement("input");
         inputDesc.setAttribute("type", "text");
         inputDesc.setAttribute("id", "checklist-description");
+        inputDesc.setAttribute("name", "checklist-description");
         inputDesc.setAttribute("placeholder", "Description");
 
+        const labelDate = document.createElement("label");
+        labelDate.textContent = "Due date";
         const inputDate = document.createElement("input");
         inputDate.setAttribute("type", "text");
         inputDate.setAttribute("id", "checklist-date");
+        inputDate.setAttribute("name", "checklist-date");
         inputDate.setAttribute("placeholder", "dd/mm/yyyy");
 
+        let priority = "low";
         const buttonPriorityLow = document.createElement("button");
         buttonPriorityLow.textContent = "Low";
+        buttonPriorityLow.addEventListener("click", (e) => {
+            e.preventDefault();
+            priority = "low";
+        });
 
         const buttonPriorityMid = document.createElement("button");
         buttonPriorityMid.textContent = "Mid";
+        buttonPriorityMid.addEventListener("click", (e) => {
+            e.preventDefault();
+            priority = "mid";
+        });
 
         const buttonPriorityHigh = document.createElement("button");
         buttonPriorityHigh.textContent = "High";
+        buttonPriorityHigh.addEventListener("click", (e) => {
+            e.preventDefault();
+            priority = "high";
+        });
 
         const divCheckItems = document.createElement("div");
         divCheckItems.className = "div-check-items";
+        divCheckItems.setAttribute("id", "checks");
 
         const inputCheckDesc = document.createElement("input");
         inputCheckDesc.setAttribute("type", "text");
@@ -301,7 +333,8 @@ function ScreenController() {
 
         const buttonAddCheck = document.createElement("button");
         buttonAddCheck.textContent = "Add item";
-        buttonAddCheck.addEventListener('click', () => {
+        buttonAddCheck.addEventListener('click', (e) => {
+            e.preventDefault();
             const inputCheckDesc = document.createElement("input");
             inputCheckDesc.setAttribute("type", "text");
             inputCheckDesc.setAttribute("id", "check-description");
@@ -311,9 +344,13 @@ function ScreenController() {
 
         const buttonSubmitChecklist = document.createElement("button");
         buttonSubmitChecklist.textContent = "Add new checklist";
+        buttonSubmitChecklist.setAttribute("type", "submit");
 
+        formChecklist.appendChild(labelTitle);
         formChecklist.appendChild(inputTitle);
+        formChecklist.appendChild(labelDesc);
         formChecklist.appendChild(inputDesc);
+        formChecklist.appendChild(labelDate);
         formChecklist.appendChild(inputDate);
         formChecklist.appendChild(buttonPriorityLow);
         formChecklist.appendChild(buttonPriorityMid);
@@ -322,6 +359,37 @@ function ScreenController() {
         formChecklist.appendChild(buttonAddCheck);
         formChecklist.appendChild(buttonSubmitChecklist);
         formContent.appendChild(formChecklist);
+
+        formChecklist.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+
+            const formDataObj = Object.fromEntries(formData.entries());
+            dialog.close();
+
+            let checksArr = [];
+            const checksDiv = document.getElementById("checks");
+            for (let i = 0; i < checksDiv.length; i++) {
+                const itemDesc = document.getElementById("check-description");
+                const description = itemDesc.textContent;
+                const item = new Check(description);
+                checksArr.push(item);
+            }
+
+            const newChecklist = new Checklist(
+                formDataObj["checklist-title"], 
+                formDataObj["checklist-description"],
+                checksArr,
+                formDataObj["checklist-date"],
+                priority
+            );
+
+            currentProject.addItem(newChecklist);
+            renderProjectButtons();
+            renderProjectItems(currentProject);
+            localStorage.clear();
+            populateStorage();
+        });
     });
 
     const buttonNewProject = document.querySelector(".button-new-project");

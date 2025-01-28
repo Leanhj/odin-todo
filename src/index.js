@@ -68,10 +68,65 @@ function ScreenController() {
     function renderProjectItems(project) {
         itemsDiv.replaceChildren();
         project.items.forEach(element => {
+            let i = 0;
             const objectDiv = document.createElement('div');
-            objectDiv.textContent = element.title;
+            objectDiv.className = "div-object";
+            objectDiv.setAttribute("id", i);
+            if (element.id === "todo") {
+                renderTodo(element, i, objectDiv);
+            } else if (element.id === "note") {
+                renderNote(element, i, objectDiv);
+            } else {
+                renderChecklist(element, i, objectDiv);
+            }
             itemsDiv.appendChild(objectDiv);
+            i++
         });
+    }
+
+    function renderTodo(todo, i, div) {
+        const checkmark = document.createElement('input');
+        checkmark.setAttribute("type", "checkbox");
+        const divTitle = document.createElement("div");
+        divTitle.textContent = todo.title;
+        const divPriority = document.createElement("div");
+        divPriority.textContent = todo.priority;
+        const divDate = document.createElement("div");
+        divDate.textContent = todo.dueDate.slice(0, 10);
+        const buttonExpand = document.createElement("button");
+        buttonExpand.textContent = "Expand";
+        div.appendChild(checkmark);
+        div.appendChild(divTitle);
+        div.appendChild(divPriority);
+        div.appendChild(divDate);
+        div.appendChild(buttonExpand);
+    }
+
+    function renderNote(note, i, div) {
+        const divTitle = document.createElement("div");
+        divTitle.textContent = note.title;
+        const buttonExpand = document.createElement("button");
+        buttonExpand.textContent = "Expand";
+        div.appendChild(divTitle);
+        div.appendChild(buttonExpand);
+    }
+
+    function renderChecklist(checklist, i, div) {
+        const checkmark = document.createElement('input');
+        checkmark.setAttribute("type", "checkbox");
+        const divTitle = document.createElement("div");
+        divTitle.textContent = checklist.title;
+        const divPriority = document.createElement("div");
+        divPriority.textContent = checklist.priority;
+        const divDate = document.createElement("div");
+        divDate.textContent = checklist.dueDate.slice(0, 10);
+        const buttonExpand = document.createElement("button");
+        buttonExpand.textContent = "Expand";
+        div.appendChild(checkmark);
+        div.appendChild(divTitle);
+        div.appendChild(divPriority);
+        div.appendChild(divDate);
+        div.appendChild(buttonExpand);
     }
 
     function populateStorage() {

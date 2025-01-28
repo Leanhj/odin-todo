@@ -95,6 +95,29 @@ function ScreenController() {
         divDate.textContent = todo.dueDate.slice(0, 10);
         const buttonExpand = document.createElement("button");
         buttonExpand.textContent = "Expand";
+        buttonExpand.addEventListener("click", () => {
+            const dialogTodo = document.querySelector(".item-expand");
+            dialogTodo.showModal();
+            dialogTodo.replaceChildren();
+            const dialogTitle = document.createElement("div");
+            dialogTitle.textContent = todo.title;
+            const dialogDesc = document.createElement("div");
+            dialogDesc.textContent = todo.description;
+            const dialogPriority = document.createElement("div");
+            dialogPriority.textContent = todo.priority;
+            const dialogDate = document.createElement("div");
+            dialogDate.textContent = todo.dueDate.slice(0, 10);
+            const dialogClose = document.createElement("button");
+            dialogClose.textContent = "Close";
+            dialogClose.addEventListener("click", () => {
+                dialogTodo.close();
+            });
+            dialogTodo.appendChild(dialogTitle);
+            dialogTodo.appendChild(dialogDesc);
+            dialogTodo.appendChild(dialogPriority);
+            dialogTodo.appendChild(dialogDate);
+            dialogTodo.appendChild(dialogClose);
+        });
         div.appendChild(checkmark);
         div.appendChild(divTitle);
         div.appendChild(divPriority);
@@ -107,6 +130,23 @@ function ScreenController() {
         divTitle.textContent = note.title;
         const buttonExpand = document.createElement("button");
         buttonExpand.textContent = "Expand";
+        buttonExpand.addEventListener("click", () => {
+            const dialogNote = document.querySelector(".item-expand");
+            dialogNote.showModal();
+            dialogNote.replaceChildren();
+            const dialogTitle = document.createElement("div");
+            dialogTitle.textContent = note.title;
+            const dialogDesc = document.createElement("div");
+            dialogDesc.textContent = note.description;
+            const dialogClose = document.createElement("button");
+            dialogClose.textContent = "Close";
+            dialogClose.addEventListener("click", () => {
+                dialogNote.close();
+            });
+            dialogNote.appendChild(dialogTitle);
+            dialogNote.appendChild(dialogDesc);
+            dialogNote.appendChild(dialogClose);
+        });
         div.appendChild(divTitle);
         div.appendChild(buttonExpand);
     }
@@ -122,6 +162,41 @@ function ScreenController() {
         divDate.textContent = checklist.dueDate.slice(0, 10);
         const buttonExpand = document.createElement("button");
         buttonExpand.textContent = "Expand";
+        buttonExpand.addEventListener("click", () => {
+            const dialogChecklist = document.querySelector(".item-expand");
+            dialogChecklist.showModal();
+            dialogChecklist.replaceChildren();
+            const dialogTitle = document.createElement("div");
+            dialogTitle.textContent = checklist.title;
+            const dialogDesc = document.createElement("div");
+            dialogDesc.textContent = checklist.description;
+            const dialogDivChecks = document.createElement("div");
+            checklist.checks.forEach(item => {
+                const divDialogCheckItems = document.createElement("div");
+                const itemCheckmark = document.createElement("input");
+                itemCheckmark.setAttribute("type", "checkbox");
+                const itemDesc = document.createElement("div");
+                itemDesc.textContent = item.description;
+                divDialogCheckItems.appendChild(itemCheckmark);
+                divDialogCheckItems.appendChild(itemDesc);
+                dialogDivChecks.appendChild(divDialogCheckItems);
+            });
+            const dialogPriority = document.createElement("div");
+            dialogPriority.textContent = checklist.priority;
+            const dialogDate = document.createElement("div");
+            dialogDate.textContent = checklist.dueDate.slice(0, 10);
+            const dialogClose = document.createElement("button");
+            dialogClose.textContent = "Close";
+            dialogClose.addEventListener("click", () => {
+                dialogChecklist.close();
+            });
+            dialogChecklist.appendChild(dialogTitle);
+            dialogChecklist.appendChild(dialogDesc);
+            dialogChecklist.appendChild(dialogDivChecks);
+            dialogChecklist.appendChild(dialogPriority);
+            dialogChecklist.appendChild(dialogDate);
+            dialogChecklist.appendChild(dialogClose);
+        });
         div.appendChild(checkmark);
         div.appendChild(divTitle);
         div.appendChild(divPriority);

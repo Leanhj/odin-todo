@@ -124,11 +124,20 @@ function ScreenController() {
             dialogTodo.appendChild(dialogDate);
             dialogTodo.appendChild(dialogClose);
         });
+        const buttonDelete = document.createElement("button");
+        buttonDelete.textContent = "Delete";
+        buttonDelete.addEventListener("click", () => {
+            currentProject.deleteItem(todo);
+            renderProjectItems(currentProject);
+            // localStorage.clear();
+            // populateStorage();
+        });
         div.appendChild(checkmark);
         div.appendChild(divTitle);
         div.appendChild(divPriority);
         div.appendChild(divDate);
         div.appendChild(buttonExpand);
+        div.appendChild(buttonDelete);
     }
 
     function renderNote(note, i, div) {
@@ -153,8 +162,17 @@ function ScreenController() {
             dialogNote.appendChild(dialogDesc);
             dialogNote.appendChild(dialogClose);
         });
+        const buttonDelete = document.createElement("button");
+        buttonDelete.textContent = "Delete";
+        buttonDelete.addEventListener("click", () => {
+            currentProject.deleteItem(note);
+            renderProjectItems(currentProject);
+            // localStorage.clear();
+            // populateStorage();
+        });
         div.appendChild(divTitle);
         div.appendChild(buttonExpand);
+        div.appendChild(buttonDelete);
     }
 
     function renderChecklist(checklist, i, div) {
@@ -207,10 +225,19 @@ function ScreenController() {
             dialogChecklist.appendChild(dialogDate);
             dialogChecklist.appendChild(dialogClose);
         });
+        const buttonDelete = document.createElement("button");
+        buttonDelete.textContent = "Delete";
+        buttonDelete.addEventListener("click", () => {
+            currentProject.deleteItem(checklist);
+            renderProjectItems(currentProject);
+            // localStorage.clear();
+            // populateStorage();
+        });
         div.appendChild(divTitle);
         div.appendChild(divPriority);
         div.appendChild(divDate);
         div.appendChild(buttonExpand);
+        div.appendChild(buttonDelete);
     }
 
     function populateStorage() {

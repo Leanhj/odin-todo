@@ -87,6 +87,12 @@ function ScreenController() {
     function renderTodo(todo, i, div) {
         const checkmark = document.createElement('input');
         checkmark.setAttribute("type", "checkbox");
+        if (todo.status) {
+            checkmark.checked = true;
+        }
+        checkmark.addEventListener("click", () => {
+            todo.editStatus();
+        });
         const divTitle = document.createElement("div");
         divTitle.textContent = todo.title;
         const divPriority = document.createElement("div");
@@ -152,8 +158,6 @@ function ScreenController() {
     }
 
     function renderChecklist(checklist, i, div) {
-        const checkmark = document.createElement('input');
-        checkmark.setAttribute("type", "checkbox");
         const divTitle = document.createElement("div");
         divTitle.textContent = checklist.title;
         const divPriority = document.createElement("div");
@@ -175,6 +179,12 @@ function ScreenController() {
                 const divDialogCheckItems = document.createElement("div");
                 const itemCheckmark = document.createElement("input");
                 itemCheckmark.setAttribute("type", "checkbox");
+                if (item.state) {
+                    itemCheckmark.checked = true;
+                }
+                itemCheckmark.addEventListener("click", () => {
+                    item.editState();
+                });
                 const itemDesc = document.createElement("div");
                 itemDesc.textContent = item.description;
                 divDialogCheckItems.appendChild(itemCheckmark);
@@ -197,7 +207,6 @@ function ScreenController() {
             dialogChecklist.appendChild(dialogDate);
             dialogChecklist.appendChild(dialogClose);
         });
-        div.appendChild(checkmark);
         div.appendChild(divTitle);
         div.appendChild(divPriority);
         div.appendChild(divDate);

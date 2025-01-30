@@ -98,7 +98,7 @@ function ScreenController() {
         const divPriority = document.createElement("div");
         divPriority.textContent = todo.priority;
         const divDate = document.createElement("div");
-        divDate.textContent = todo.dueDate.slice(0, 10);
+        divDate.textContent = todo.dueDate;
         const buttonExpand = document.createElement("button");
         buttonExpand.textContent = "Expand";
         buttonExpand.addEventListener("click", () => {
@@ -112,7 +112,7 @@ function ScreenController() {
             const dialogPriority = document.createElement("div");
             dialogPriority.textContent = todo.priority;
             const dialogDate = document.createElement("div");
-            dialogDate.textContent = todo.dueDate.slice(0, 10);
+            dialogDate.textContent = todo.dueDate;
             const dialogClose = document.createElement("button");
             dialogClose.textContent = "Close";
             dialogClose.addEventListener("click", () => {
@@ -181,7 +181,7 @@ function ScreenController() {
         const divPriority = document.createElement("div");
         divPriority.textContent = checklist.priority;
         const divDate = document.createElement("div");
-        divDate.textContent = checklist.dueDate.slice(0, 10);
+        divDate.textContent = checklist.dueDate;
         const buttonExpand = document.createElement("button");
         buttonExpand.textContent = "Expand";
         buttonExpand.addEventListener("click", () => {
@@ -212,7 +212,7 @@ function ScreenController() {
             const dialogPriority = document.createElement("div");
             dialogPriority.textContent = checklist.priority;
             const dialogDate = document.createElement("div");
-            dialogDate.textContent = checklist.dueDate.slice(0, 10);
+            dialogDate.textContent = checklist.dueDate;
             const dialogClose = document.createElement("button");
             dialogClose.textContent = "Close";
             dialogClose.addEventListener("click", () => {
@@ -373,6 +373,7 @@ function ScreenController() {
             );
 
             currentProject.addItem(newTodo);
+            projectTodos.addItem(newTodo);
             renderProjectButtons();
             renderProjectItems(currentProject);
             localStorage.clear();
@@ -427,6 +428,7 @@ function ScreenController() {
             );
 
             currentProject.addItem(newNote);
+            projectNotes.addItem(newNote);
             renderProjectButtons();
             renderProjectItems(currentProject);
             localStorage.clear();
@@ -551,6 +553,7 @@ function ScreenController() {
             );
 
             currentProject.addItem(newChecklist);
+            projectChecklists.addItem(newChecklist);
             renderProjectButtons();
             renderProjectItems(currentProject);
             localStorage.clear();

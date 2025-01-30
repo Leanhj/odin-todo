@@ -5,7 +5,7 @@ class Checklist {
         this.title = title;
         this.description = description;
         this.checks = checks;
-        this.dueDate = parse(dueDate, 'dd/MM/yyyy', new Date());
+        this.dueDate = new Date(parse(dueDate, 'dd/MM/yyyy', new Date())).toDateString();
         this.priority = priority;
         this.id = 'checklist';
     }

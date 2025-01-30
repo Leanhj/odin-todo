@@ -536,10 +536,10 @@ function ScreenController() {
             dialog.close();
 
             let checksArr = [];
-            const checksDiv = document.getElementById("checks");
+            const checksDiv = document.getElementById("checks").children;
             for (let i = 0; i < checksDiv.length; i++) {
                 const itemDesc = document.getElementById("check-description");
-                const description = itemDesc.textContent;
+                const description = itemDesc.value;
                 const item = new Check(description);
                 checksArr.push(item);
             }

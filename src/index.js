@@ -113,6 +113,108 @@ function ScreenController() {
             dialogPriority.textContent = todo.priority;
             const dialogDate = document.createElement("div");
             dialogDate.textContent = todo.dueDate;
+            const dialogEdit = document.createElement("button");
+            dialogEdit.textContent = "Edit";
+            dialogEdit.addEventListener("click", () => {
+                const modalEdit = document.querySelector(".edit");
+                modalEdit.showModal();
+                modalEdit.replaceChildren();
+                const editForm = document.createElement("form");
+                editForm.replaceChildren();
+
+                const labelTitle = document.createElement("label");
+                labelTitle.textContent = "To-do title";
+                labelTitle.setAttribute("for", "todo-title");
+                const inputTitle = document.createElement("input");
+                inputTitle.setAttribute("type", "text");
+                inputTitle.setAttribute("id", "todo-title");
+                inputTitle.setAttribute("name", "todo-title");
+                inputTitle.setAttribute("placeholder", todo.title);
+        
+                const labelDesc = document.createElement("label");
+                labelDesc.textContent = "To-do description";
+                labelDesc.setAttribute("for", "todo-description");
+                const inputDesc = document.createElement("input");
+                inputDesc.setAttribute("type", "text");
+                inputDesc.setAttribute("id", "todo-description");
+                inputDesc.setAttribute("name", "todo-description");
+                inputDesc.setAttribute("placeholder", todo.description);
+        
+                const labelDate = document.createElement("label");
+                labelDate.textContent = "Due date";
+                labelDate.setAttribute("for", "todo-date");
+                const inputDate = document.createElement("input");
+                inputDate.setAttribute("type", "text");
+                inputDate.setAttribute("id", "todo-date");
+                inputDate.setAttribute("name", "todo-date");
+                inputDate.setAttribute("placeholder", "dd/mm/yyyy");
+        
+                let priority = "low";
+                const buttonPriorityLow = document.createElement("button");
+                buttonPriorityLow.textContent = "Low";
+                buttonPriorityLow.addEventListener("click", (e) => {
+                    e.preventDefault();
+                    priority = "low";
+                });
+        
+                const buttonPriorityMid = document.createElement("button");
+                buttonPriorityMid.textContent = "Mid";
+                buttonPriorityMid.addEventListener("click", (e) => {
+                    e.preventDefault();
+                    priority = "mid";
+                });
+        
+                const buttonPriorityHigh = document.createElement("button");
+                buttonPriorityHigh.textContent = "High";
+                buttonPriorityHigh.addEventListener("click", (e) => {
+                    e.preventDefault();
+                    priority = "high";
+                });
+        
+                const buttonSubmitTodo = document.createElement("button");
+                buttonSubmitTodo.textContent = "Confirm";
+                buttonSubmitTodo.setAttribute("type", "submit");
+
+                const buttonClose = document.createElement("button");
+                buttonClose.textContent = "Close";
+                buttonClose.addEventListener("click", () => {
+                    modalEdit.close();
+                });
+        
+                editForm.appendChild(labelTitle);
+                editForm.appendChild(inputTitle);
+                editForm.appendChild(labelDesc);
+                editForm.appendChild(inputDesc);
+                editForm.appendChild(labelDate);
+                editForm.appendChild(inputDate);
+                editForm.appendChild(buttonPriorityLow);
+                editForm.appendChild(buttonPriorityMid);
+                editForm.appendChild(buttonPriorityHigh);
+                editForm.appendChild(buttonSubmitTodo);
+                editForm.appendChild(buttonClose);
+        
+                editForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const formData = new FormData(e.target);
+        
+                    const formDataObj = Object.fromEntries(formData.entries());
+                    modalEdit.close();
+                    dialogTodo.close();
+
+                    todo.editTitle(formDataObj["todo-title"]);
+                    todo.editDescription(formDataObj["todo-description"]);
+                    todo.editDueDate(formDataObj["todo-date"]);
+                    todo.editPriority(priority);
+
+                    // renderProjectButtons();
+                    renderProjectItems(currentProject);
+                    localStorage.clear();
+                    populateStorage();
+                });
+
+                modalEdit.appendChild(editForm);
+            });
+
             const dialogClose = document.createElement("button");
             dialogClose.textContent = "Close";
             dialogClose.addEventListener("click", () => {
@@ -122,6 +224,7 @@ function ScreenController() {
             dialogTodo.appendChild(dialogDesc);
             dialogTodo.appendChild(dialogPriority);
             dialogTodo.appendChild(dialogDate);
+            dialogTodo.appendChild(dialogEdit);
             dialogTodo.appendChild(dialogClose);
         });
         const buttonDelete = document.createElement("button");

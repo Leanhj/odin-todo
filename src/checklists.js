@@ -19,7 +19,7 @@ class Checklist {
     }
 
     editDueDate(newDue) {
-        this.dueDate = parse(newDue, 'dd/MM/yyyy', new Date());
+        this.dueDate = new Date(parse(newDue, 'dd/MM/yyyy', new Date())).toDateString();
     }
 
     editPriority(newPriority) {

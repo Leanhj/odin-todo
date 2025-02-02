@@ -74,6 +74,8 @@ function ScreenController() {
         }
         checkmark.addEventListener("click", () => {
             todo.editStatus();
+            localStorage.clear();
+            populateStorage();
         });
         const divTitle = document.createElement("div");
         divTitle.textContent = todo.title;

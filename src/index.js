@@ -34,15 +34,36 @@ function ScreenController() {
         divProjectButtons.replaceChildren();
         let i = 0;
         wrapper.projects.forEach(element => {
+            const projectButtonDiv = document.createElement("div");
             const projectButton = document.createElement('button');
             projectButton.textContent = element.name;
             projectButton.setAttribute("id", i);
             projectButton.addEventListener('click', () => {
                 renderProjectItems(element);
-                let id = projectButton.getAttribute("id");
+                const id = projectButton.getAttribute("id");
                 currentProject = wrapper.projects[id];
             });
-            divProjectButtons.appendChild(projectButton);
+            const projectDeleteButton = document.createElement("button");
+            projectDeleteButton.textContent = "Delete";
+            projectDeleteButton.setAttribute("id", i);
+            projectDeleteButton.addEventListener("click", () => {
+                const id = projectDeleteButton.getAttribute("id");
+                const toDelete = wrapper.projects[id];
+                toDelete.items.forEach(item => {
+                    toDelete.deleteItem(item);
+                });
+                wrapper.deleteProject(toDelete);
+                renderProjectItems(currentProject);
+                currentProject = projectHome;
+                renderProjectButtons();
+                localStorage.clear();
+                populateStorage();
+            });
+            projectButtonDiv.appendChild(projectButton);
+            if (i != 0) {
+                projectButtonDiv.appendChild(projectDeleteButton);
+            }
+            divProjectButtons.appendChild(projectButtonDiv);
             i++;
         });
     }

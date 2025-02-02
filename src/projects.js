@@ -37,8 +37,8 @@ class ProjectWrapper {
     }
 
     deleteProject(project) {
-        const index = this.items.indexOf(project);
-        this.items.splice(index, 1);
+        const index = this.projects.indexOf(project);
+        this.projects.splice(index, 1);
     }
 
     log() {

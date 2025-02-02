@@ -10,17 +10,9 @@ import { runTestsTodos, runTestsProjects, runTestDelete, runTestStorage } from "
 // runTestStorage();
 
 const projectHome = new Project('Home');
-const projectTodos = new Project('To-dos');
-const projectNotes = new Project('Notes');
-const projectChecklists = new Project('Checklists');
-const projectToday = new Project('Today');
 let wrapper = new ProjectWrapper();
 
 wrapper.addProject(projectHome);
-wrapper.addProject(projectTodos);
-wrapper.addProject(projectNotes);
-wrapper.addProject(projectChecklists);
-wrapper.addProject(projectToday);
 
 const todoDefault1 = new Todo('This is a To-do', 'You can click the checkbox to mark it as finished', '12/04/2024', 'mid');
 const noteDefault1 = new Note('This is a note', 'You can write anything you want, no due date and no priority');
@@ -29,13 +21,8 @@ let checkDefaultArray = [checkDefault1];
 const checklistDefault1 = new Checklist('This is a checklist', 'It can contain many tasks', checkDefaultArray, '12/04/2024', 'mid');
 
 projectHome.addItem(todoDefault1);
+projectHome.addItem(noteDefault1);
 projectHome.addItem(checklistDefault1);
-
-projectTodos.addItem(todoDefault1);
-
-projectNotes.addItem(noteDefault1);
-
-projectChecklists.addItem(checklistDefault1);
 
 const divProjectButtons = document.querySelector(".div-project-buttons");
 const itemsDiv = document.querySelector(".items");
@@ -54,11 +41,6 @@ function ScreenController() {
                 renderProjectItems(element);
                 let id = projectButton.getAttribute("id");
                 currentProject = wrapper.projects[id];
-                if (id <= 4 && id > 0) {
-                    buttonNew.disabled = true;
-                } else {
-                    buttonNew.disabled = false;
-                }
             });
             divProjectButtons.appendChild(projectButton);
             i++;
@@ -476,7 +458,6 @@ function ScreenController() {
             );
 
             currentProject.addItem(newTodo);
-            projectTodos.addItem(newTodo);
             renderProjectButtons();
             renderProjectItems(currentProject);
             localStorage.clear();
@@ -531,7 +512,6 @@ function ScreenController() {
             );
 
             currentProject.addItem(newNote);
-            projectNotes.addItem(newNote);
             renderProjectButtons();
             renderProjectItems(currentProject);
             localStorage.clear();
@@ -656,7 +636,6 @@ function ScreenController() {
             );
 
             currentProject.addItem(newChecklist);
-            projectChecklists.addItem(newChecklist);
             renderProjectButtons();
             renderProjectItems(currentProject);
             localStorage.clear();

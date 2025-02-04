@@ -378,6 +378,8 @@ function ScreenController() {
                 }
                 itemCheckmark.addEventListener("click", () => {
                     item.editState();
+                    localStorage.clear();
+                    populateStorage();
                 });
                 const itemDesc = document.createElement("div");
                 itemDesc.textContent = item.description;

@@ -289,7 +289,7 @@ function ScreenController() {
                 inputDesc.setAttribute("placeholder", "Description");
         
                 const buttonSubmitNote = document.createElement("button");
-                buttonSubmitNote.textContent = "Add new note";
+                buttonSubmitNote.textContent = "Confirm";
                 buttonSubmitNote.setAttribute("type", "submit");
         
                 editForm.appendChild(labelTitle);

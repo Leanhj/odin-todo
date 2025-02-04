@@ -182,7 +182,8 @@ function ScreenController() {
 
                 const buttonClose = document.createElement("button");
                 buttonClose.textContent = "Close";
-                buttonClose.addEventListener("click", () => {
+                buttonClose.addEventListener("click", (e) => {
+                    e.preventDefault();
                     modalEdit.close();
                 });
         
@@ -222,7 +223,8 @@ function ScreenController() {
 
             const dialogClose = document.createElement("button");
             dialogClose.textContent = "Close";
-            dialogClose.addEventListener("click", () => {
+            dialogClose.addEventListener("click", (e) => {
+                e.preventDefault();
                 dialogTodo.close();
             });
             dialogTodo.appendChild(dialogTitle);
@@ -291,13 +293,20 @@ function ScreenController() {
                 const buttonSubmitNote = document.createElement("button");
                 buttonSubmitNote.textContent = "Confirm";
                 buttonSubmitNote.setAttribute("type", "submit");
+
+                const buttonClose = document.createElement("button");
+                buttonClose.textContent = "Close";
+                buttonClose.addEventListener("click", (e) => {
+                    e.preventDefault();
+                    modalEdit.close();
+                });
         
                 editForm.appendChild(labelTitle);
                 editForm.appendChild(inputTitle);
                 editForm.appendChild(labelDesc);
                 editForm.appendChild(inputDesc);
                 editForm.appendChild(buttonSubmitNote);
-                formContent.appendChild(editForm);
+                editForm.appendChild(buttonClose);
         
                 editForm.addEventListener('submit', (e) => {
                     e.preventDefault();
@@ -380,6 +389,141 @@ function ScreenController() {
             dialogPriority.textContent = checklist.priority;
             const dialogDate = document.createElement("div");
             dialogDate.textContent = checklist.dueDate;
+            const dialogEdit = document.createElement("button");
+            dialogEdit.textContent = "Edit";
+            dialogEdit.addEventListener("click", () => {
+                const modalEdit = document.querySelector(".edit");
+                modalEdit.showModal();
+                modalEdit.replaceChildren();
+                const editForm = document.createElement("form");
+                editForm.replaceChildren();
+
+                const labelTitle = document.createElement("label");
+                labelTitle.textContent = "Checklist title";
+                labelTitle.setAttribute("for", "checklist-title");
+                const inputTitle = document.createElement("input");
+                inputTitle.setAttribute("type", "text");
+                inputTitle.setAttribute("id", "checklist-title");
+                inputTitle.setAttribute("name", "checklist-title");
+                inputTitle.setAttribute("placeholder", "Title");
+        
+                const labelDesc = document.createElement("label");
+                labelDesc.textContent = "Checklist description";
+                labelDesc.setAttribute("for", "checklist-description");
+                const inputDesc = document.createElement("input");
+                inputDesc.setAttribute("type", "text");
+                inputDesc.setAttribute("id", "checklist-description");
+                inputDesc.setAttribute("name", "checklist-description");
+                inputDesc.setAttribute("placeholder", "Description");
+        
+                const labelDate = document.createElement("label");
+                labelDate.textContent = "Due date";
+                const inputDate = document.createElement("input");
+                inputDate.setAttribute("type", "text");
+                inputDate.setAttribute("id", "checklist-date");
+                inputDate.setAttribute("name", "checklist-date");
+                inputDate.setAttribute("placeholder", "dd/mm/yyyy");
+        
+                let priority = "low";
+                const buttonPriorityLow = document.createElement("button");
+                buttonPriorityLow.textContent = "Low";
+                buttonPriorityLow.addEventListener("click", (e) => {
+                    e.preventDefault();
+                    priority = "low";
+                });
+        
+                const buttonPriorityMid = document.createElement("button");
+                buttonPriorityMid.textContent = "Mid";
+                buttonPriorityMid.addEventListener("click", (e) => {
+                    e.preventDefault();
+                    priority = "mid";
+                });
+        
+                const buttonPriorityHigh = document.createElement("button");
+                buttonPriorityHigh.textContent = "High";
+                buttonPriorityHigh.addEventListener("click", (e) => {
+                    e.preventDefault();
+                    priority = "high";
+                });
+        
+                const divCheckItems = document.createElement("div");
+                divCheckItems.className = "div-check-items";
+                divCheckItems.setAttribute("id", "checks");
+        
+                const inputCheckDesc = document.createElement("input");
+                inputCheckDesc.setAttribute("type", "text");
+                inputCheckDesc.setAttribute("id", "check-description");
+                inputCheckDesc.setAttribute("placeholder", "Description");
+                divCheckItems.appendChild(inputCheckDesc);
+        
+                const buttonAddCheck = document.createElement("button");
+                buttonAddCheck.textContent = "Add item";
+                buttonAddCheck.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const inputCheckDesc = document.createElement("input");
+                    inputCheckDesc.setAttribute("type", "text");
+                    inputCheckDesc.setAttribute("id", "check-description");
+                    inputCheckDesc.setAttribute("placeholder", "Description");
+                    divCheckItems.appendChild(inputCheckDesc);
+                });
+        
+                const buttonSubmitChecklist = document.createElement("button");
+                buttonSubmitChecklist.textContent = "Confirm";
+                buttonSubmitChecklist.setAttribute("type", "submit");
+
+                const buttonClose = document.createElement("button");
+                buttonClose.textContent = "Close";
+                buttonClose.addEventListener("click", (e) => {
+                    e.preventDefault();
+                    modalEdit.close();
+                });
+        
+                editForm.appendChild(labelTitle);
+                editForm.appendChild(inputTitle);
+                editForm.appendChild(labelDesc);
+                editForm.appendChild(inputDesc);
+                editForm.appendChild(labelDate);
+                editForm.appendChild(inputDate);
+                editForm.appendChild(buttonPriorityLow);
+                editForm.appendChild(buttonPriorityMid);
+                editForm.appendChild(buttonPriorityHigh);
+                editForm.appendChild(divCheckItems);
+                editForm.appendChild(buttonAddCheck);
+                editForm.appendChild(buttonSubmitChecklist);
+                editForm.appendChild(buttonClose);
+        
+                editForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const formData = new FormData(e.target);
+        
+                    const formDataObj = Object.fromEntries(formData.entries());
+                    modalEdit.close();
+                    dialogChecklist.close();
+        
+                    let checksArr = [];
+                    const checksDiv = document.getElementById("checks").children;
+                    for (let i = 0; i < checksDiv.length; i++) {
+                        const itemDesc = checksDiv[i];
+                        const description = itemDesc.value;
+                        const item = new Check(description);
+                        checksArr.push(item);
+                    }
+
+                    checklist.editTitle(formDataObj["checklist-title"]);
+                    checklist.editDescription(formDataObj["checklist-description"]);
+                    checklist.editDueDate(formDataObj["checklist-date"]);
+                    checklist.editPriority(priority);
+                    checklist.editChecks(checksArr);
+        
+                    // renderProjectButtons();
+                    renderProjectItems(currentProject);
+                    localStorage.clear();
+                    populateStorage();
+                });
+
+                modalEdit.appendChild(editForm);
+            });
+
             const dialogClose = document.createElement("button");
             dialogClose.textContent = "Close";
             dialogClose.addEventListener("click", () => {
@@ -390,6 +534,7 @@ function ScreenController() {
             dialogChecklist.appendChild(dialogDivChecks);
             dialogChecklist.appendChild(dialogPriority);
             dialogChecklist.appendChild(dialogDate);
+            dialogChecklist.appendChild(dialogEdit);
             dialogChecklist.appendChild(dialogClose);
         });
         const buttonDelete = document.createElement("button");

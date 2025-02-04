@@ -18,6 +18,10 @@ class Checklist {
         this.description = newDesc;
     }
 
+    editChecks(newChecks) {
+        this.checks = newChecks;
+    }
+
     editDueDate(newDue) {
         this.dueDate = new Date(parse(newDue, 'dd/MM/yyyy', new Date())).toDateString();
     }

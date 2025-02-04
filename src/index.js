@@ -261,6 +261,64 @@ function ScreenController() {
             dialogTitle.textContent = note.title;
             const dialogDesc = document.createElement("div");
             dialogDesc.textContent = note.description;
+            const dialogEdit = document.createElement("button");
+            dialogEdit.textContent = "Edit";
+            dialogEdit.addEventListener("click", () => {
+                const modalEdit = document.querySelector(".edit");
+                modalEdit.showModal();
+                modalEdit.replaceChildren();
+                const editForm = document.createElement("form");
+                editForm.replaceChildren();
+
+                const labelTitle = document.createElement("label");
+                labelTitle.textContent = "Note title";
+                labelTitle.setAttribute("for", "note-title");
+                const inputTitle = document.createElement("input");
+                inputTitle.setAttribute("type", "text");
+                inputTitle.setAttribute("id", "note-title");
+                inputTitle.setAttribute("name", "note-title");
+                inputTitle.setAttribute("placeholder", "Title");
+        
+                const labelDesc = document.createElement("label");
+                labelDesc.textContent = "Note description";
+                labelDesc.setAttribute("for", "note-description");
+                const inputDesc = document.createElement("input");
+                inputDesc.setAttribute("type", "text");
+                inputDesc.setAttribute("id", "note-description");
+                inputDesc.setAttribute("name", "note-description");
+                inputDesc.setAttribute("placeholder", "Description");
+        
+                const buttonSubmitNote = document.createElement("button");
+                buttonSubmitNote.textContent = "Add new note";
+                buttonSubmitNote.setAttribute("type", "submit");
+        
+                editForm.appendChild(labelTitle);
+                editForm.appendChild(inputTitle);
+                editForm.appendChild(labelDesc);
+                editForm.appendChild(inputDesc);
+                editForm.appendChild(buttonSubmitNote);
+                formContent.appendChild(editForm);
+        
+                editForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const formData = new FormData(e.target);
+        
+                    const formDataObj = Object.fromEntries(formData.entries());
+                    modalEdit.close();
+                    dialogNote.close();
+
+                    note.editTitle(formDataObj["note-title"]);
+                    note.editDescription(formDataObj["note-description"]);
+
+                    // renderProjectButtons();
+                    renderProjectItems(currentProject);
+                    localStorage.clear();
+                    populateStorage();
+                });
+
+                modalEdit.appendChild(editForm);
+            });
+
             const dialogClose = document.createElement("button");
             dialogClose.textContent = "Close";
             dialogClose.addEventListener("click", () => {
@@ -268,6 +326,7 @@ function ScreenController() {
             });
             dialogNote.appendChild(dialogTitle);
             dialogNote.appendChild(dialogDesc);
+            dialogNote.appendChild(dialogEdit);
             dialogNote.appendChild(dialogClose);
         });
         const buttonDelete = document.createElement("button");

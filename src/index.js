@@ -644,7 +644,7 @@ function ScreenController() {
             let checksArr = [];
             const checksDiv = document.getElementById("checks").children;
             for (let i = 0; i < checksDiv.length; i++) {
-                const itemDesc = document.getElementById("check-description");
+                const itemDesc = checksDiv[i];
                 const description = itemDesc.value;
                 const item = new Check(description);
                 checksArr.push(item);
